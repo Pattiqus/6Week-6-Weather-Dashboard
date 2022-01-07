@@ -26,21 +26,32 @@
         <h1>Weather Dashboard</h1>
     </header>
     <main>
-        <aside>
-            <div class="firstQuarterColumn">
+        <!-- Form for submission of city data to third party API -->
+        <aside class="col-fourth">
+            <div class="column-content">
                 <h2>Search for a City:</h2>
                 <form>
-                    <input type="text" id="cityInput" name="cityInput" placeholder="Melbourne">
-                    <button></button>
-            </div>
-        </aside>
+                    <input type="text" id="cityInput" name="cityInput" placeholder="Melbourne" class="form-input" />
+                    <button class="search-button">Submit</button>
+                </form>
+                <!-- where to insert buttons with historical cities -->
+                <div id="history">
 
+                </div>
+            </div> 
+        </aside>  
+
+        <div class="col-three-fourths">
+            <div class="column-content weather-data"></div>
+        </div>
+
+        <div id="result"></div>
     </main>
     <footer>
 
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="http://api.openweathermap.org/data/2.5/weather"></script>
-    <script src="./assets/javascript/script.js"></script>
+    <!-- <script src="pro.openweathermap.org/data/2.5/forecast/hourly?q={city name},{state code},{country code}&APIKey={text-input}"></script> -->
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>

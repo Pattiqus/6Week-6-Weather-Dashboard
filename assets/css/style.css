@@ -1,5 +1,3 @@
-
-
 header h1 {
     text-align: center;
     padding: 20px;
@@ -14,5 +12,49 @@ header {
 }
 
 .firstQuarterColumn {
+    display: inline-block;
+}
+
+
+/**
+*   ### LAYOUT ### 
+*/
+main {
+    display: flex;
+}
+
+aside, div.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.col-fourth {
+    width: 25%;
+}
+
+.col-half {
+    width: 50%;
+}
+
+.col-three-fourths {
+    width: 75%;
+}
+
+.col-full-width {
+    width: 100%;
+}
+
+.column-content { 
+    padding: 30px;
+}
+
+/**
+*   ### ASIDE ### 
+*/
+
+input.form-input,
+button.search-button {
     display: block;
+    width: 100%;
+    margin-top: 15px;
 }
