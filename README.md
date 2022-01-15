@@ -45,7 +45,7 @@ https://pattiqus.github.io/6Week-6-Weather-Dashboard/
 
 <h2>Screenshot:</h2>
 
-![6Week6-weatherDashboard-Screenshot](/assets/img/6Week6-weatherDashboard-Screenshot.JPG)
+![6Week6-weatherDashboard-Screenshot](/assets/img/6week6-weatherDashboard-Screenshot.JPG)
 
 </br>
 
