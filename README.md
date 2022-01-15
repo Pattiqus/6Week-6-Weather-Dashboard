@@ -28,7 +28,6 @@ The above data can also be obtained for any city by putting the city name and co
     <li>openWeatherMap API</li>
     <li>HTML 5</li>
     <li>CSS 4</li>
-    <li>
 <ul>
 
 <br/>
@@ -38,7 +37,7 @@ https://pattiqus.github.io/6Week-6-Weather-Dashboard/
 
 <h2>Screenshot:</h2>
 
-![Week6-WorkDayScheduler-Screenshot](/assets/img/6Week6-weatherDashboard-Screenshot.JPG)
+![Week6-WorkDayScheduler-Screenshot](./assets/img/6Week6-weatherDashboard-Screenshot.JPG)
 
 </br>
 
