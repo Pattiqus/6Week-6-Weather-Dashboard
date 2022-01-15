@@ -3,7 +3,15 @@
 <body>
 This repository contains the source code for a Weather DashBoard which is dynamically enabled with Javascript while utilizing jQuery and the third party API, Open Weather Map.
 
-The application works by first requesting the user to allow location data through the browser. This will then display the weather information for the current city which includes:
+The application works by first requesting the user to allow location data through the browser. 
+
+If the user allows this, then weather information for the current location is displayed.
+If the user does not allow then nothing is displayed.
+
+The user can then replace the current location (or add a city if location was not opted for) by inputing a city name into the form and hitting the search button to submit.
+
+This will then display the weather information for the current city which includes:
+
 <ul>
     <li>Location</li>
     <li>Weather Icon</li>
@@ -15,9 +23,7 @@ The application works by first requesting the user to allow location data throug
 
 Information forcast for the next 5 days is also displayed.
 
-If the user does not allow then nothing is displayed.
 
-The above data can also be obtained for any city by putting the city name and country code into the form and submitting.
 
 
 <br/>
