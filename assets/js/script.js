@@ -27,12 +27,102 @@ if (window.navigator && window.navigator.geolocation) {
     
 }
 
+
+/**
+ * Function: retrievePreviousSearchedCities()
+ * Description: Retrieve all stored cities that were preivously searched
+ *      then render out to HTML as clickable buttons. 
+ * @return {void}
+ */
+var retrievePreviousSearchedCities = function() {
+
+    // # Retrieve: All stored cities from Local Storage
+    var storedCities = localStorage.getItem('weatherCitySearches') != null && localStorage.getItem('weatherCitySearches') != "" ? JSON.parse( localStorage.getItem('weatherCitySearches') ) : [];
+
+    // # Create: HTML Previous search buttons
+    var currentHistory = "";
+
+
+    // # Loop: Through each of the cities & append button
+    for(var currentCity = 0, totalCities = (storedCities.length <= 10 ? storedCities.length : 10 ); currentCity < totalCities; currentCity++) {
+
+        // # Define: Current City Name
+        var currentCityName = storedCities[ currentCity ].cityName;
+        var currentCityLat = storedCities[ currentCity ].coord.lat;
+        var currentCityLon = storedCities[ currentCity ].coord.lon;
+        var currentCityCountryCode = storedCities[ currentCity ].countryCode;
+
+        // # Append: Button to string for rendering to HTML
+        currentHistory += '<button class="city-history" data-latitude="' + currentCityLat + '" data-longitude="' + currentCityLon + '" data-country-code="' + currentCityCountryCode + '">';
+            currentHistory += currentCityName + ", " + currentCityCountryCode;
+        currentHistory += '</button>';
+    }
+    
+    // # Retrieve: History Container/Element
+    var historyContentEl = document.querySelector('.column-content.history');
+
+    // # Set/Render: Dynamic HTML based off local storage data
+    historyContentEl.innerHTML = currentHistory;
+
+
+    // # Retrieve: All new buttons 
+    var insertedButtons = historyContentEl.querySelectorAll('button.city-history');
+    
+    // # Loop & Bind: Buttons to event listener
+    for( var currentButton = 0, totalButtons = insertedButtons.length; currentButton < totalButtons; currentButton++ ) {
+        
+        insertedButtons[ currentButton ].addEventListener('click', searchPreviousCity);
+
+    }
+
+    console.log(currentHistory);
+
+};
+
+// # Invoke: retrievePreviousSearchedCities() on-page load.
+retrievePreviousSearchedCities();
+
+
+/**
+ * Function: searchPreviousCity()
+ * Description: Event listener for buttons dynamically created
+ *      based off previous search history.
+ * @param {Event} clickEvent - The event passed in by the browser
+ * @return {void}
+ */
+var searchPreviousCity = function( clickEvent ) {
+    
+    // # Define: Current Button
+    var currentButton = this;
+
+    // # Retrieve: Latitude/Longitude Data from button
+    var latitude = currentButton.getAttribute('data-latitude');
+    var longitude = currentButton.getAttribute('data-longitude');
+
+
+    // # Create: Position object to pass-through
+    var position = {
+        coords: {
+            latitude: latitude,
+            longitude: longitude,
+        }
+    };
+
+    
+    console.log( "Button hit! Coords:" , latitude, longitude, position );
+
+    // # Call: Fetch Weather Data Function
+    fetchWeatherData( position );
+};
+
 /*
 Function: fetchWeatherData
 Desription: Calls upon defined weather service API to retreive weather data based on either current latitude longitude OR user input for City names then writes to HTML
 */
 
 var fetchWeatherData = function (position, cityName) {
+
+    console.log( position );
 
     var hasErrors = false; 
     var ajaxData = {              
@@ -47,38 +137,47 @@ var fetchWeatherData = function (position, cityName) {
 
     if ( cityName != null ) {
         ajaxData.q = cityName;
-        $.ajax({
-            url: openWeatherMapCurrentApi,
-            method: "GET",
-            data: ajaxData,
-            dataType: "JSON",
-            async: false,
-            success: function( data ) {
-                console.log(data);
-
-                // # Define: Co-ordinates based on weather API call 
-                var latitude = data.coord.lat;
-                var longitude = data.coord.lon;
-
-                // # Mutate: Change data based on API Response
-                ajaxData.lat = latitude;
-                ajaxData.lon = longitude
-
-                // # Remove: Query key from ajax data for subsequent call
-                delete ajaxData.q;
-
-
-            },
-            error: function (xhr, status, error) {
-
-                console.log( 'Error has been hit! 🔴🔴🔴' );
-                // # Use-Case: Invalid or incorrect city name/state provided, stop code from processing.
-                hasErrors = true;
-
-
-            }
-        });
     }
+
+    var cityName;
+    var countryCode;
+
+    $.ajax({
+        url: openWeatherMapCurrentApi,
+        method: "GET",
+        data: ajaxData,
+        dataType: "JSON",
+        async: false,
+        success: function( data ) {
+            console.log(data);
+
+            // # Define: Co-ordinates based on weather API call 
+            var latitude = data.coord.lat;
+            var longitude = data.coord.lon;
+
+            // # Mutate: Change data based on API Response
+            ajaxData.lat = latitude;
+            ajaxData.lon = longitude
+
+            // # Remove: Query key from ajax data for subsequent call
+            delete ajaxData.q;
+
+            // # Set: City Name from Callback for subsequent API call
+            cityName = data.name;
+            countryCode = data.sys.country;
+
+            console.log( cityName );
+
+        },
+        error: function (xhr, status, error) {
+
+            console.log( 'Error has been hit! 🔴🔴🔴' );
+            // # Use-Case: Invalid or incorrect city name/state provided, stop code from processing.
+            hasErrors = true;
+
+
+        }
+    });
 
     if( hasErrors === false ) {
         $.ajax({
@@ -96,7 +195,7 @@ var fetchWeatherData = function (position, cityName) {
                 console.log( currentWeatherData );
 
                 // # Determine: Current City
-                var currentCity = String( weatherData.timezone ).split('/')[1];
+                // var currentCity = String( weatherData.timezone ).split('/')[1];
 
                 // # Determine: Current Date
                 var currentDate = new Date().toLocaleDateString();
@@ -111,7 +210,7 @@ var fetchWeatherData = function (position, cityName) {
 
                         // # Current City TItle/Date
                         currentHtml += '<div class="current-weather-title">';
-                            currentHtml += currentCity + " (" + currentDate + ")";
+                            currentHtml += cityName + ", " + countryCode + " (" + currentDate + ")";
                         currentHtml += '</div>';
 
                         // # Define: Current Temp
@@ -163,9 +262,9 @@ var fetchWeatherData = function (position, cityName) {
                 var columnContentEl = document.querySelector('.column-content.weather-data');
                 columnContentEl.innerHTML = currentHtml;
 
-                console.log( currentHtml );
-                console.log( currentCity );
-                console.log( dailyData );
+                // console.log( currentHtml );
+                // console.log( currentCity );
+                // console.log( dailyData );
 
                 // # Define: Current City/User Input City based on calls
                 // if( typeof cityName !== null ) {
@@ -177,7 +276,7 @@ var fetchWeatherData = function (position, cityName) {
                 // }
 
                 // # ^^^ Ternary Style of coding for the above
-                var cityApi = typeof cityName !== null ? cityName : currentCity;
+                // var cityApi = typeof cityName !== null ? cityName : currentCity;
 
 
                 // # Get: Previous Cities stored in LocalStorage
@@ -189,13 +288,48 @@ var fetchWeatherData = function (position, cityName) {
 
                 console.log('Type of previousSearchedCities', typeof previousSearchedCities, previousSearchedCities);
 
+                // # Create: Data-set for putting into LocalStorage
+                var localStorageDataset = {
+                    cityName: cityName,
+                    coord: {
+                        lat: ajaxData.lat,
+                        lon: ajaxData.lon,
+                    },
+                    countryCode: countryCode
+                };
+
                 // # Sanity-Check: Ensure city does not pop up in list twice
-                if( previousSearchedCities.indexOf( currentCity ) == -1 ) {
-                    previousSearchedCities.push( currentCity );
+                var currentCityStored = false;
+                for( var storedCity = 0, totalStoredCities = previousSearchedCities.length; storedCity < totalStoredCities; storedCity++ ) {
+
+                    // # Define: Current City to Check 
+                    var currentCityToCheck = previousSearchedCities[ storedCity ];
+                    
+                    // # Matched: Set Current City to be found, prevent from doubling up
+                    if( 
+                        currentCityToCheck.cityName == cityName &&
+                        currentCityToCheck.countryCode == countryCode
+                    ) {
+                        currentCityStored = true;
+                        break;
+                    }
+
+                }
+
+                if( currentCityStored === false ) {
+                    previousSearchedCities.push( localStorageDataset );
+
+                    if( previousSearchedCities.length >= 10 ) {
+                        previousSearchedCities.shift();
+                    }
                 }
 
                 // # Store: City into LocalStorage
                 localStorage.setItem('weatherCitySearches', JSON.stringify( previousSearchedCities ) );
+
+                // # Invoke: retrievePreviousSearchedCities() on-page load.
+                retrievePreviousSearchedCities();
+                
             }
         });
     }
