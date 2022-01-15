@@ -3,13 +3,15 @@
 <body>
 This repository contains the source code for a Weather DashBoard which is dynamically enabled with Javascript while utilizing jQuery and the third party API, Open Weather Map.
 
-The application works by first requesting the user to allow location data through the browser. This will then display the weather information for the current city which includes
-    - Location
-    - Weather Icon
-    - Temperature (C)
-    - Wind Speed
-    - Humidity
-    - UV Index
+The application works by first requesting the user to allow location data through the browser. This will then display the weather information for the current city which includes:
+<ul>
+    <li>Location</li>
+    <li>Weather Icon</li>
+    <li>Temperature (°C)</li>
+    <li>Wind Speed</li>
+    <li>Humidity</li>
+    <li>UV Index</li>
+</ul>
 
 Information forcast for the next 5 days is also displayed.
 
@@ -37,7 +39,7 @@ https://pattiqus.github.io/6Week-6-Weather-Dashboard/
 
 <h2>Screenshot:</h2>
 
-![Week6-WorkDayScheduler-Screenshot](./assets/img/6Week6-weatherDashboard-Screenshot.JPG)
+![Week6-WorkDayScheduler-Screenshot](/assets/img/6Week6-weatherDashboard-Screenshot.JPG)
 
 </br>
 
