@@ -75,7 +75,7 @@ var retrievePreviousSearchedCities = function() {
 
     }
 
-    console.log(currentHistory);
+    // console.log(currentHistory);
 
 };
 
@@ -92,6 +92,9 @@ retrievePreviousSearchedCities();
  */
 var searchPreviousCity = function( clickEvent ) {
     
+    // # Prevent: Default Button Behaviour
+    clickEvent.preventDefault();
+
     // # Define: Current Button
     var currentButton = this;
 
@@ -109,7 +112,7 @@ var searchPreviousCity = function( clickEvent ) {
     };
 
     
-    console.log( "Button hit! Coords:" , latitude, longitude, position );
+    // console.log( "Button hit! Coords:" , latitude, longitude, position );
 
     // # Call: Fetch Weather Data Function
     fetchWeatherData( position );
@@ -122,7 +125,7 @@ Desription: Calls upon defined weather service API to retreive weather data base
 
 var fetchWeatherData = function (position, cityName) {
 
-    console.log( position );
+    // console.log( position );
 
     var hasErrors = false; 
     var ajaxData = {              
@@ -149,7 +152,7 @@ var fetchWeatherData = function (position, cityName) {
         dataType: "JSON",
         async: false,
         success: function( data ) {
-            console.log(data);
+            // console.log(data);
 
             // # Define: Co-ordinates based on weather API call 
             var latitude = data.coord.lat;
@@ -166,7 +169,7 @@ var fetchWeatherData = function (position, cityName) {
             cityName = data.name;
             countryCode = data.sys.country;
 
-            console.log( cityName );
+            // console.log( cityName );
 
         },
         error: function (xhr, status, error) {
@@ -186,13 +189,13 @@ var fetchWeatherData = function (position, cityName) {
             data: ajaxData, 
             dataType: "JSON",
             success: function( data ) {
-                console.log( data );
+                // console.log( data );
                 
                 var weatherData = data;
                 var dailyData = weatherData.daily;
                 var currentWeatherData = Object.assign({}, weatherData.current );
 
-                console.log( currentWeatherData );
+                // console.log( currentWeatherData );
 
                 // # Determine: Current City
                 // var currentCity = String( weatherData.timezone ).split('/')[1];
@@ -209,15 +212,16 @@ var fetchWeatherData = function (position, cityName) {
                     currentHtml += '<div class="current-weather-container">';
 
                         // # Current City TItle/Date
-                        currentHtml += '<div class="current-weather-title">';
+                        currentHtml += '<div class="current-weather-title current-weather-block">';
                             currentHtml += cityName + ", " + countryCode + " (" + currentDate + ")";
+                            currentHtml += '<img class="current-weather-icon" src="http://openweathermap.org/img/w/' + data.current.weather[0].icon + '.png" />';
                         currentHtml += '</div>';
 
                         // # Define: Current Temp
                         var currentTemp = currentWeatherData.temp;
 
                         // # Current City Temp (C)
-                        currentHtml += '<div  class="current-weather-temperature">';
+                        currentHtml += '<div  class="current-weather-temperature current-weather-block">';
                             currentHtml += "Temperature: " + currentTemp + "℃";
                         currentHtml += '</div>';
 
@@ -225,7 +229,7 @@ var fetchWeatherData = function (position, cityName) {
                         var currentWindSpeed = currentWeatherData.wind_speed;
 
                         // # Current City Wind Speed
-                        currentHtml += '<div  class="current-weather-speed">';
+                        currentHtml += '<div  class="current-weather-speed current-weather-block">';
                             currentHtml += "Wind Speed: " + currentWindSpeed + " km/h";
                         currentHtml += '</div>';
 
@@ -234,16 +238,31 @@ var fetchWeatherData = function (position, cityName) {
                         var currentHumidity = currentWeatherData.humidity;
 
                         // # Current City Humidity
-                        currentHtml += '<div  class="current-weather-humidity">';
+                        currentHtml += '<div  class="current-weather-humidity current-weather-block">';
                             currentHtml += "Humidity: " + currentHumidity + "%";
                         currentHtml += '</div>';
 
                         // # Define: Current City UVI
                         var currentUvi = parseFloat( currentWeatherData.uvi ).toFixed( 2 );
 
+
+                        // # Determine: UVI Index Rating
+                        var uviRating;
+                        if( currentUvi <= 2 ) {
+                            uviRating = "low";
+                        } else if ( currentUvi > 2 && currentUvi <= 5 ) {
+                            uviRating = "moderate";
+                        } else if ( currentUvi > 5 && currentUvi <= 7 ) {
+                            uviRating = "high";
+                        } else if ( currentUvi > 7 && currentUvi <= 10 ) {
+                            uviRating = "very-high";
+                        } else {
+                            uviRating = "extreme"
+                        }
+
                         // # Current City Humidity
-                        currentHtml += '<div  class="current-weather-uvi">';
-                            currentHtml += "UV Index: " + currentUvi;
+                        currentHtml += '<div  class="current-weather-uvi current-weather-block ' + uviRating + '">';
+                            currentHtml += "UV Index: <span class='uv-rating'>" + currentUvi + "</span>";
                         currentHtml += '</div>';
 
                     currentHtml += '</div>';
@@ -251,8 +270,47 @@ var fetchWeatherData = function (position, cityName) {
 
                     currentHtml += '<div class="forecast-weather-container">';
 
-                        currentHtml += '<div class="forecast-weather-tile weather-tile-day">';
-                            currentHtml += 'DAY 1';
+                        currentHtml += '<h3 class="five-day-forecast-title">5-day Forecast:</h3>';
+
+                        currentHtml += '<div class="forecast-weather-tile-container">';
+
+                        // # Loop: Through next five day data and add in tiles
+                        for( var nextDays = 1, totalForecastDays = 5; nextDays <= totalForecastDays; nextDays++ ) {
+                            
+                            // # Define: Next Day Data
+                            var nextDayData = data.daily[ nextDays ];
+
+                            // console.log( nextDayData );
+
+                            // # Define: Date from timestamp
+                            var nextDayDate = new Date( nextDayData.dt * 1000 );
+                            var formattedNextDayDate = nextDayDate.getDate() + '/' + ("0" + (nextDayDate.getMonth()+1)).slice(-2) + '/' + nextDayDate.getFullYear();
+
+                            // # Append: Tile Wrapper
+                            currentHtml += '<div class="forecast-weather-tile weather-tile-day">';
+
+                                // # Append: Forecast Date
+                                currentHtml += '<div class="forecast-weather-date forecast-weather-tile-block">' + formattedNextDayDate + "</div>";
+
+                                // # Append: Forecast Weather Icon
+                                currentHtml += '<div class="forecast-weather-icon forecast-weather-tile-block">';
+                                    currentHtml += '<img class="forecast-weather-icon" src="http://openweathermap.org/img/w/' + nextDayData.weather[0].icon + '.png" />';
+                                currentHtml += "</div>";
+
+                                // # Append: Min Forecast Temperature
+                                currentHtml += '<div class="forecast-weather-temp forecast-weather-tile-block">Min. Temp: ' + nextDayData.temp.min + "℃</div>";
+
+                                // # Append: Max Forecast Temperature
+                                currentHtml += '<div class="forecast-weather-temp forecast-weather-tile-block">Max Temp: ' + nextDayData.temp.max + "℃</div>";
+
+                                // # Append: Forecast Wind
+                                currentHtml += '<div class="forecast-weather-wind forecast-weather-tile-block">Wind: ' + nextDayData.wind_speed + "km/h</div>";
+
+                                // # Append: Forecast Humidity
+                                currentHtml += '<div class="forecast-weather-wind forecast-weather-tile-block">Humidity: ' + nextDayData.humidity + " %</div>";
+
+                            currentHtml += '</div>';
+                        }
 
                         currentHtml += '</div>';
 
@@ -286,7 +344,7 @@ var fetchWeatherData = function (position, cityName) {
                 
                 // # Use-case: Has exceeded remove the first
 
-                console.log('Type of previousSearchedCities', typeof previousSearchedCities, previousSearchedCities);
+                // console.log('Type of previousSearchedCities', typeof previousSearchedCities, previousSearchedCities);
 
                 // # Create: Data-set for putting into LocalStorage
                 var localStorageDataset = {
@@ -347,7 +405,7 @@ var searchCityForm = function ( formSubmitEvent) {
     // Retreive: user Input from form
     var userInput = document.getElementById("cityInput").value;
     // Debug: Check user input value is read
-    console.log(userInput);
+    // console.log(userInput);
     // Set: Set parameter - position to value of userInput
     fetchWeatherData( null, userInput );
 

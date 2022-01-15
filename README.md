@@ -5,12 +5,18 @@ This repository contains the source code for a Weather DashBoard which is dynami
 
 The application works by first requesting the user to allow location data through the browser. This will then display the weather information for the current city which includes
     - Location
+    - Weather Icon
     - Temperature (C)
     - Wind Speed
     - Humidity
-    UV Index
+    - UV Index
 
-Using moment.js & Javascript the page dynamically changes the colours of the input rows based upon the time. This highlights past , current and future tasks witha  grey, red & green hue respectivally.
+Information forcast for the next 5 days is also displayed.
+
+If the user does not allow then nothing is displayed.
+
+The above data can also be obtained for any city by putting the city name and country code into the form and submitting.
+
 
 <br/>
 <br/>
@@ -32,7 +38,7 @@ https://pattiqus.github.io/6Week-6-Weather-Dashboard/
 
 <h2>Screenshot:</h2>
 
-![Week6-WorkDayScheduler-Screenshot](/assets/images/6Week6-weatherDashboard-Screenshot.JPG)
+![Week6-WorkDayScheduler-Screenshot](/assets/img/6Week6-weatherDashboard-Screenshot.JPG)
 
 </br>
 

@@ -48,9 +48,30 @@ aside, div.content {
     padding: 30px;
 }
 
+.column-content#history {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
 /**
 *   ### ASIDE ### 
 */
+
+h2.search-bar-title {
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 42px;
+    
+}
+
+input.form-input {
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 24px;
+}
 
 input.form-input,
 button.search-button {
@@ -59,9 +80,120 @@ button.search-button {
     margin-top: 15px;
 }
 
+button {
+    border-radius: 6px;
+    text-align: center;
+    outline: none;
+    border: 0;
+    font-size: 16px;
+    line-height: 24px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+button.search-button {
+    background: #5aa2e9;
+    color: #FFFFFF;
+}
+
+
 button.city-history {
     display: block;
     width: 100%;
     margin-top: 5px;
     margin-bottom: 10px;
+    background: #b7b7b7;
+    color: #000000;
+}
+
+
+form#submitCityForm {
+    padding-bottom: 25px;
+    border-bottom: 1px solid #000000;
+}
+
+.current-weather-container {
+    padding: 20px;
+    border: 1px solid #000000;
+}
+
+.current-weather-container .current-weather-title {
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 42px;
+}
+
+.current-weather-container .current-weather-block {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.current-weather-container .current-weather-uvi.low span.uv-rating {
+    background: darkgreen;
+}
+
+.current-weather-container .current-weather-uvi.moderate span.uv-rating {
+    background: #009ddc;
+}
+
+.current-weather-container .current-weather-uvi.high span.uv-rating {
+    background: rgb(184, 101, 0);
+}
+
+.current-weather-container .current-weather-uvi.very-high span.uv-rating {
+    background: maroon;
+}
+
+.current-weather-container .current-weather-uvi.extreme span.uv-rating {
+    background: #000000;
+}
+
+
+.current-weather-container .current-weather-uvi span.uv-rating {
+    display: inline-block;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin-left: 15px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+
+.forecast-weather-container {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.forecast-weather-tile-container {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.forecast-weather-container .five-day-forecast-title {
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
+
+.forecast-weather-tile {
+    display: inline-grid;
+    min-width: 175px;
+    padding: 15px;
+    background: #33475a;
+    margin-right: 15px;
+    color: #FFFFFF;
+}
+
+.forecast-weather-tile:last-child,
+.forecast-weather-tile:last-of-type {
+    margin-right: 0;
+}
+
+.forecast-weather-tile .forecast-weather-tile-block {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.forecast-weather-tile .forecast-weather-date {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: bold;
 }
