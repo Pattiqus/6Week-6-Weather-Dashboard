@@ -324,17 +324,7 @@ var fetchWeatherData = function (position, cityName) {
                 // console.log( currentCity );
                 // console.log( dailyData );
 
-                // # Define: Current City/User Input City based on calls
-                // if( typeof cityName !== null ) {
-                //     // # Store: User Input City
-                //     var cityApi = cityName;
-                // } else {
-                //     // # Store: GeoLocated City
-                //     var cityApi = currentCity;
-                // }
 
-                // # ^^^ Ternary Style of coding for the above
-                // var cityApi = typeof cityName !== null ? cityName : currentCity;
 
 
                 // # Get: Previous Cities stored in LocalStorage
@@ -408,23 +398,6 @@ var searchCityForm = function ( formSubmitEvent) {
     // console.log(userInput);
     // Set: Set parameter - position to value of userInput
     fetchWeatherData( null, userInput );
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // // Retreiving 
-    // document.querySelector('#cityInput');
-    // // Prevent: Default browser behaviour for the form
-    // submitEvent.preventDefault();
 }
 
 
@@ -432,42 +405,3 @@ var searchCityForm = function ( formSubmitEvent) {
 var formEl = document.getElementById('submitCityForm');
 // Bind:
 formEl.addEventListener('submit', searchCityForm);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // 
-// var submitCityBtn = document.getElementById('submitCityForm');
-// submitCityBtn.addEventListiner('click', searchCityForm);
-
-
-
-
-// // # Retreive: City previously searched for
-// var searchHistory = document.getElementById('cityInput').value;
-
-// // # Debugging: Output city to console log
-// console.log( searchHistory );
-
-// // # Define: Object data to save for search history
-
-// var searchHistorylog = {
-//     searchHistory
-// }
-
-
-
