@@ -36,7 +36,7 @@ Information forcast for the next 5 days is also displayed.
     <li>openWeatherMap API</li>
     <li>HTML 5</li>
     <li>CSS 4</li>
-<ul>
+</ul>
 
 <br/>
 <h2>URL:</h2>
