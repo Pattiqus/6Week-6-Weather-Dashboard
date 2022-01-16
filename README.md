@@ -1,5 +1,5 @@
-# 6Week-6-Weather-Dashboard
-<h1>Work Day Scheduler!</h1>
+# Week-6-Weather-Dashboard
+<h1>Traveler's Weather Dashboard!</h1>
 <body>
 This repository contains the source code for a Weather DashBoard which is dynamically enabled with Javascript while utilizing jQuery and the third party API, Open Weather Map.
 

@@ -9,12 +9,6 @@ var openWeatherMap = 'http://api.openweathermap.org/data/2.5/weather';
 var weatherMapApiForecast = 'https://api.openweathermap.org/data/2.5/onecall';
 var openWeatherMapCurrentApi = 'https://api.openweathermap.org/data/2.5/weather';
 
-//  ?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-
-
-// # On-Load: Display any saved Cities within search
-
-
 // # Use-Case: Either default to users' current geo or their most recent city that they searched
 
 /*
@@ -26,7 +20,6 @@ if (window.navigator && window.navigator.geolocation) {
     });
     
 }
-
 
 /**
  * Function: retrievePreviousSearchedCities()
@@ -75,7 +68,6 @@ var retrievePreviousSearchedCities = function() {
 
     }
 
-    // console.log(currentHistory);
 
 };
 
@@ -111,9 +103,6 @@ var searchPreviousCity = function( clickEvent ) {
         }
     };
 
-    
-    // console.log( "Button hit! Coords:" , latitude, longitude, position );
-
     // # Call: Fetch Weather Data Function
     fetchWeatherData( position );
 };
@@ -124,8 +113,6 @@ Desription: Calls upon defined weather service API to retreive weather data base
 */
 
 var fetchWeatherData = function (position, cityName) {
-
-    // console.log( position );
 
     var hasErrors = false; 
     var ajaxData = {              
@@ -152,8 +139,7 @@ var fetchWeatherData = function (position, cityName) {
         dataType: "JSON",
         async: false,
         success: function( data ) {
-            // console.log(data);
-
+ 
             // # Define: Co-ordinates based on weather API call 
             var latitude = data.coord.lat;
             var longitude = data.coord.lon;
@@ -168,13 +154,10 @@ var fetchWeatherData = function (position, cityName) {
             // # Set: City Name from Callback for subsequent API call
             cityName = data.name;
             countryCode = data.sys.country;
-
-            // console.log( cityName );
-
+ 
         },
         error: function (xhr, status, error) {
 
-            console.log( 'Error has been hit! 🔴🔴🔴' );
             // # Use-Case: Invalid or incorrect city name/state provided, stop code from processing.
             hasErrors = true;
 
@@ -189,16 +172,10 @@ var fetchWeatherData = function (position, cityName) {
             data: ajaxData, 
             dataType: "JSON",
             success: function( data ) {
-                // console.log( data );
-                
+ 
                 var weatherData = data;
                 var dailyData = weatherData.daily;
                 var currentWeatherData = Object.assign({}, weatherData.current );
-
-                // console.log( currentWeatherData );
-
-                // # Determine: Current City
-                // var currentCity = String( weatherData.timezone ).split('/')[1];
 
                 // # Determine: Current Date
                 var currentDate = new Date().toLocaleDateString();
@@ -280,8 +257,6 @@ var fetchWeatherData = function (position, cityName) {
                             // # Define: Next Day Data
                             var nextDayData = data.daily[ nextDays ];
 
-                            // console.log( nextDayData );
-
                             // # Define: Date from timestamp
                             var nextDayDate = new Date( nextDayData.dt * 1000 );
                             var formattedNextDayDate = nextDayDate.getDate() + '/' + ("0" + (nextDayDate.getMonth()+1)).slice(-2) + '/' + nextDayDate.getFullYear();
@@ -320,22 +295,13 @@ var fetchWeatherData = function (position, cityName) {
                 var columnContentEl = document.querySelector('.column-content.weather-data');
                 columnContentEl.innerHTML = currentHtml;
 
-                // console.log( currentHtml );
-                // console.log( currentCity );
-                // console.log( dailyData );
-
-
-
-
                 // # Get: Previous Cities stored in LocalStorage
                 var previousSearchedCities = localStorage.getItem('weatherCitySearches') != null && localStorage.getItem('weatherCitySearches') != "" ? JSON.parse( localStorage.getItem('weatherCitySearches') ) : [];
 
                 // # Sanity-Check: Ensure that it hasn't exceed 10 cities in storage;
                 
                 // # Use-case: Has exceeded remove the first
-
-                // console.log('Type of previousSearchedCities', typeof previousSearchedCities, previousSearchedCities);
-
+   
                 // # Create: Data-set for putting into LocalStorage
                 var localStorageDataset = {
                     cityName: cityName,
@@ -394,8 +360,6 @@ var searchCityForm = function ( formSubmitEvent) {
     formSubmitEvent.preventDefault();
     // Retreive: user Input from form
     var userInput = document.getElementById("cityInput").value;
-    // Debug: Check user input value is read
-    // console.log(userInput);
     // Set: Set parameter - position to value of userInput
     fetchWeatherData( null, userInput );
 }
